@@ -1,8 +1,0 @@
-owner: zeta9044
-git-repo: datahub-helm
-package-path: .cr-release-packages
-index-path: .cr-index/index.yaml
-git-base-url: https://api.github.com/
-git-upload-url: https://uploads.github.com/
-charts-repo: https://zeta9044.github.io/datahub-helm/
-skip-existing: true
