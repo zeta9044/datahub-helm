@@ -2,7 +2,7 @@
 # Copy this file and update to the configuration of choice
 elasticsearch:
   # set this to false, if you want to provide your own ES instance.
-  enabled: true
+  enabled: false
 
   # If you're running in production, set this to 3 and comment out antiAffinity below
   # Or alternatively if you're running production, bring your own ElasticSearch
@@ -36,7 +36,7 @@ elasticsearch:
   #       storage: 100M
 
 opensearch:
-  enabled: false
+  enabled: true
 
   # If you're running in production, set this to false, replicas to 3 and uncomment antiAffinity below
   # Or alternatively if you're running production, bring your own OpenSearch
@@ -58,35 +58,35 @@ opensearch:
   image:
     tag: "2.11.0"
 
-  # opensearchJavaOpts: "-Xmx512M -Xms512M"
+  opensearchJavaOpts: "-Xmx512M -Xms512M"
 
-  # resources:
-  #   requests:
-  #     cpu: "1000m"
-  #     memory: "100Mi"
+  resources:  
+    requests:
+      cpu: "1000m"
+      memory: "100Mi"
 
   # Request smaller persistent volumes.
-  # persistence:
-  #   storageClass: "standard"
-  #   accessModes:
-  #     - ReadWriteOnce
-  #   size: 100M
+  persistence:
+    storageClass: "standard"
+    accessModes:
+      - ReadWriteOnce
+    size: 100M
 
 # Official neo4j chart, supports both community and enterprise editions
 # see https://neo4j.com/docs/operations-manual/current/kubernetes/ for more information
 # source: https://github.com/neo4j/helm-charts
 neo4j:
-  enabled: false
+  enabled: true
   nameOverride: neo4j
   neo4j:
     name: neo4j
     edition: "community"
     acceptLicenseAgreement: "yes"
     defaultDatabase: "graph.db"
-    password: "datahub"
+    # password: "datahub"
     # For better security, add password to neo4j-secrets k8s secret with: neo4j-username, neo4j-password, and NEO4J_AUTH then uncomment below
     # NEO4J_AUTH: should be composed like so: {Username}/{Password}
-    # passwordFromSecret: neo4j-secrets
+    passwordFromSecret: "neo4j-secrets"
 
   # Set security context for pod
   securityContext:
@@ -112,7 +112,7 @@ neo4j:
     NEO4J_PLUGINS: '["apoc"]'
 
 mysql:
-  enabled: true
+  enabled: false
   image:
     tag: 8.0.32-debian-11-r26
   auth:
@@ -122,7 +122,7 @@ mysql:
     extraFlags: "--character-set-server=utf8mb4 --collation-server=utf8mb4_bin"
 
 postgresql:
-  enabled: false
+  enabled: true
   auth:
     # For better security, add postgresql-secrets k8s secret with postgres-password, replication-password and password
     existingSecret: postgresql-secrets
@@ -154,10 +154,10 @@ gcloud-sqlproxy:
         port: 3306
 
 cp-helm-charts:
-  enabled: false
+  enabled: true
   # Schema registry is under the community license
   cp-schema-registry:
-    enabled: false
+    enabled: true
     kafka:
       # <<release-name>>-kafka:9092
       bootstrapServers: "prerequisites-kafka:9092"
