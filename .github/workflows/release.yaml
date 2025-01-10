@@ -18,8 +18,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # 전체 히스토리를 가져오도록 수정
+
+      - name: Fetch history
+        run: git fetch --prune --unshallow
 
       - name: Configure Git
         run: |
@@ -38,23 +39,11 @@ jobs:
           helm repo add neo4j https://helm.neo4j.com/neo4j
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add cp-helm-charts https://confluentinc.github.io/cp-helm-charts
-          helm repo add datahub https://helm.datahubproject.io
-          helm repo update
-
-      # GitHub Pages 설정
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
-
+          
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.1
+        with:
+          charts_repo_url: https://zeta9044.github.io/datahub-helm
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           CR_SKIP_EXISTING: true
-          
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: .cr-release-packages/
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
