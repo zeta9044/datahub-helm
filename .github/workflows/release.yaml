@@ -3,7 +3,7 @@ name: Release Charts
 on:
   push:
     branches:
-      - main     # 기존대로 main branch 유지
+      - main
     paths-ignore:
       - '**.md'
       - 'LICENSE'
@@ -39,17 +39,6 @@ jobs:
           helm repo add neo4j https://helm.neo4j.com/neo4j
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add cp-helm-charts https://confluentinc.github.io/cp-helm-charts
-
-      # index.yaml 관련 부분만 추가
-      - name: Generate index.yaml
-        run: |
-          helm repo index .
-          
-      - name: Push index.yaml
-        run: |
-          git add index.yaml
-          git commit -m "Update index.yaml"
-          git push -f
           
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.1
@@ -57,3 +46,4 @@ jobs:
           charts_repo_url: https://zeta9044.github.io/datahub-helm
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_SKIP_EXISTING: true
