@@ -30,16 +30,14 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v1
         with:
-          version: v3.4.0
+          version: v3.8.1
 
-      - name: Add Helm repos
+      - name: Add Helm Dependencies
         run: |
-          helm repo add elasticsearch https://helm.elastic.co
-          helm repo add opensearch https://opensearch-project.github.io/helm-charts
-          helm repo add neo4j https://helm.neo4j.com/neo4j
-          helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm repo add cp-helm-charts https://confluentinc.github.io/cp-helm-charts
-          
+          for dir in charts/*/; do
+            helm dependency build $dir
+          done
+         
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.4.0
         with:
