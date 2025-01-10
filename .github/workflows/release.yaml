@@ -4,23 +4,19 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '**.md'
-      - 'LICENSE'
-      - 'NOTICE'
+    paths:
+      - 'charts/**'
 
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Fetch history
-        run: git fetch --prune --unshallow
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Configure Git
         run: |
@@ -28,19 +24,31 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Install Helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v3
         with:
-          version: v3.8.1
+          version: v3.12.3
 
-      - name: Add Helm Dependencies
+      - name: Add dependency repositories
+        run: |
+          helm repo add elastic https://helm.elastic.co
+          helm repo add opensearch https://opensearch-project.github.io/helm-charts
+          helm repo add neo4j https://helm.neo4j.com/neo4j
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add rimusz https://charts.rimusz.net
+          helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/
+          helm repo update
+
+      - name: Build dependencies
         run: |
           for dir in charts/*/; do
-            helm dependency build $dir
+            helm dependency build "$dir"
           done
-         
+
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.4.0
+        uses: helm/chart-releaser-action@v1.5.0
         with:
-          charts_repo_url: https://zeta9044.github.io/datahub-helm
+          charts_dir: charts
+          config: cr.yaml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_SKIP_EXISTING: true
