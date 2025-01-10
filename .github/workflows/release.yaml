@@ -3,10 +3,7 @@ name: Release Charts
 on:
   push:
     branches:
-      - main
-    paths:
-      - 'charts/**'
-
+      - main      # main 브랜치도 포함
 jobs:
   release:
     runs-on: ubuntu-latest
