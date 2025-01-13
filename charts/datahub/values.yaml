@@ -51,14 +51,7 @@ datahub-frontend:
       memory: 512Mi
   # Set up ingress to expose react front-end
   ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: nginx
-    hosts:
-      - host: "*"  # 모든 호스트 허용
-        paths:
-          - path: /
-            pathType: Prefix
+    enabled: false
   defaultUserCredentials: {}
   service:
     extraLabels: {}
