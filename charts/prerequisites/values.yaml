@@ -2,7 +2,7 @@
 # Copy this file and update to the configuration of choice
 elasticsearch:
   # set this to false, if you want to provide your own ES instance.
-  enabled: false
+  enabled: true
 
   # If you're running in production, set this to 3 and comment out antiAffinity below
   # Or alternatively if you're running production, bring your own ElasticSearch
@@ -36,7 +36,7 @@ elasticsearch:
   #       storage: 100M
 
 opensearch:
-  enabled: true
+  enabled: false
 
   # If you're running in production, set this to false, replicas to 3 and uncomment antiAffinity below
   # Or alternatively if you're running production, bring your own OpenSearch
@@ -154,10 +154,10 @@ gcloud-sqlproxy:
         port: 3306
 
 cp-helm-charts:
-  enabled: true
+  enabled: false
   # Schema registry is under the community license
   cp-schema-registry:
-    enabled: true
+    enabled: false
     kafka:
       # <<release-name>>-kafka:9092
       bootstrapServers: "prerequisites-kafka:9092"
