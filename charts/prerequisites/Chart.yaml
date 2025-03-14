@@ -24,8 +24,8 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: mysql.enabled
   - name: postgresql
-    version: 11.2.6
-    repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+    version: 15.5.38
+    repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
   - name: gcloud-sqlproxy
     version: 0.24.1
@@ -40,7 +40,7 @@ dependencies:
   # This chart deploys a community version of kafka
   - name: kafka
     version: 26.11.2
-    repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+    repository: https://charts.bitnami.com/bitnami
     condition: kafka.enabled
 maintainers:
   - name: DataHub
